@@ -1,0 +1,59 @@
+# AlmaLinux 9 Dockerfile for SLURM RPM build
+FROM almalinux:9
+
+# Clean up and makecache - aka clean slate
+RUN dnf clean all && dnf makecache
+
+# Update package lists and install necessary development tools and dependencies
+RUN dnf -y update && \
+    # Enable the EPEL repository
+    dnf -y install epel-release && \
+    # Enable the CRB or some dependencies will be missing
+    dnf -y install dnf-utils dnf-plugins-core && \
+    dnf config-manager --set-enabled crb && \
+    # Install specific packages required for building RPMs and related tools
+    dnf -y install \
+        autoconf \
+        automake \
+        hwloc \
+        hwloc-devel \
+        rpm-build \
+        rpmdevtools \
+        perl \
+        perl-ExtUtils-MakeMaker \
+        python3 \
+        python3-pip \
+        wget \
+        #libyaml \
+        #libyaml-devel \
+        lua \
+        lua-devel \
+        munge \
+        munge-devel \
+        mariadb-devel \
+        numactl \
+        readline-devel \
+        pam-devel \
+        numactl-devel \
+        bzip2 \
+        && \
+    # Clean up cached package lists to free up space
+    dnf clean all
+
+# Create builder user and set up directory structure for RPM building
+RUN useradd -m builder
+RUN mkdir -p /home/builder/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS} && \
+    chown -R builder:builder /home/builder/rpmbuild
+
+# Switch to builder user
+USER builder
+
+# Set working directory
+WORKDIR /home/builder/rpmbuild
+
+# Ensure an .rpmmacros file exists (create an empty one if not supplied)
+ENTRYPOINT ["/bin/bash", "-c", "\
+if [ -z \"$TARBALL\" ]; then echo 'Error: Environment variable TARBALL is not set'; exit 1; fi; \
+if [ ! -f \"/home/builder/input/$TARBALL\" ]; then echo 'Error: Specified tar.bz2 file not found'; exit 1; fi; \
+if [ ! -f /home/builder/.rpmmacros ]; then echo 'Creating empty .rpmmacros file'; touch /home/builder/.rpmmacros; fi; \
+rpmbuild --define \"_rpmdir $HOME/rpmbuild/RPMS/x86_64/almalinunx9\" ${BUILDARGS} -ta /home/builder/input/$TARBALL"]
