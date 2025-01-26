@@ -57,5 +57,3 @@ if [ -z \"$TARBALL\" ]; then echo 'Error: Environment variable TARBALL is not se
 if [ ! -f \"/home/builder/input/$TARBALL\" ]; then echo 'Error: Specified tar.bz2 file not found'; exit 1; fi; \
 if [ ! -f /home/builder/.rpmmacros ]; then echo 'Creating empty .rpmmacros file'; touch /home/builder/.rpmmacros; fi; \
 rpmbuild --define \"_rpmdir $HOME/rpmbuild/RPMS/x86_64/centos7\" ${BUILDARGS} -ta /home/builder/input/$TARBALL"]
-
-
