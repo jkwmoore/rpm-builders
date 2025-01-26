@@ -2,7 +2,7 @@
 FROM centos:centos7.9.2009
 
 # Fix to use Vault repos
-COPY ../centos7/repofiles/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+COPY centos7/repofiles/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
 
 # Clean up and makecache - aka clean slate
 RUN yum clean all && yum makecache
