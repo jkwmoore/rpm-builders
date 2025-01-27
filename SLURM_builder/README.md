@@ -30,10 +30,11 @@ If you want to use a custom `.rpmmacros` file:
 ##### CentOS7
 
 ```bash
+# Define environment variables for input and output paths
 export TARBALL="slurm-24.05.5.tar.bz2"
-export INPUT_VOLUME="../tarballs/slurm-tarballs"
-export OUTPUT_VOLUME="../output/slurm"
-export RPMMACROS_VOLUME="./my-custom-rpmmacros"
+export INPUT_VOLUME="$(pwd)/slurm-tarballs"
+export OUTPUT_VOLUME="$(pwd)/output"
+export RPMMACROS_VOLUME="$(pwd)/my-custom-rpmmacros"
 export BUILDARGS="--with lua --with numa"
 
 # Run the Docker container with desired options and volume mappings
@@ -49,10 +50,11 @@ docker run --rm \
 ##### Almalinux 9
 
 ```bash
+# Define environment variables for input and output paths
 export TARBALL="slurm-24.05.5.tar.bz2"
-export INPUT_VOLUME="../tarballs/slurm-tarballs"
-export OUTPUT_VOLUME="../output/slurm"
-export RPMMACROS_VOLUME="./my-custom-rpmmacros"
+export INPUT_VOLUME="$(pwd)/slurm-tarballs"
+export OUTPUT_VOLUME="$(pwd)/output"
+export RPMMACROS_VOLUME="$(pwd)/my-custom-rpmmacros"
 export BUILDARGS="--with lua --with numa"
 
 # Run the Docker container with desired options and volume mappings
