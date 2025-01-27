@@ -1,8 +1,8 @@
-# Ignore the build output directory
-/output/
+# Ignore any directory named 'output'
+output/
 
-# Ignore the build tarballs directory 
-/tarballs/
+# Ignore any directory named 'tarballs'
+tarballs/
 
 # Ignore any custom .rpmmacros files
 /custom-rpmmacros/
